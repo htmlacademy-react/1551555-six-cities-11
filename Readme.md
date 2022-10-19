@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Sergey Legenchuk](https://up.htmlacademy.ru/react/11/user/1551555).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Кузнецов](https://htmlacademy.ru/profile/knenkne).
 
 ---
 
