@@ -7,7 +7,7 @@ export default function Error404(): JSX.Element {
       <h1> Error 404 </h1>
       <p>Something went wrong.</p>
       <p style={{ height: 30}}>Very, very wrong.</p>
-      <Link to={AppRoute.Main}>Go to main page</Link>
+      <Link style={{textDecorationLine: 'underline'}} to={AppRoute.Main}>Go to main page</Link>
     </div>
   );
 }
