@@ -1,16 +1,22 @@
 import Card from '../components/card/card';
-import HeaderWrapper from '../components/header-wrapper/header-wrapper';
+import HeaderLeft from '../components/header-left/header-left';
+import HeaderNav from '../components/header-nav/header-nav';
 
 type MainScreenProps = {
   offersCount: number | null;
 };
 
-export default function MainScreen({offersCount}: MainScreenProps): JSX.Element {
+export default function MainScreen({
+  offersCount,
+}: MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
         <div className="container">
-          <HeaderWrapper/>
+          <div className="header__wrapper">
+            <HeaderLeft />
+            <HeaderNav/>
+          </div>
         </div>
       </header>
 
