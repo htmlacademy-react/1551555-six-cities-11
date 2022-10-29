@@ -10,3 +10,11 @@ export enum AuthorizationStatus {
   NoAuth = 'NOAUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const HEADERTITLE = [
+  '6 cities:',
+  'Главная cтраница',
+  'Авторизуйтись',
+  'Избранное',
+  'Предложение',
+];

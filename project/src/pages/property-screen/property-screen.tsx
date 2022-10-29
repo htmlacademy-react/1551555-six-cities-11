@@ -1,9 +1,14 @@
-import HeaderLeft from '../components/header-left/header-left';
-import HeaderNav from '../components/header-nav/header-nav';
+import HeaderLeft from '../../components/header-left/header-left';
+import HeaderNav from '../../components/header-nav/header-nav';
+import {Helmet} from 'react-helmet-async';
+import { HEADERTITLE } from '../../const';
 
 export default function PropertyScreen(): JSX.Element {
   return (
     <div className="page">
+      <Helmet>
+        <title>{HEADERTITLE[0]} {HEADERTITLE[4]}</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

@@ -1,12 +1,17 @@
-import HeaderLeft from '../components/header-left/header-left';
+import HeaderLeft from '../../components/header-left/header-left';
+import {Helmet} from 'react-helmet-async';
+import { HEADERTITLE } from '../../const';
 
 export default function LoginScreen(): JSX.Element {
   return (
     <div className="page page--gray page--login">
+      <Helmet>
+        <title>{HEADERTITLE[0]} {HEADERTITLE[2]}</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
-            <HeaderLeft/>
+            <HeaderLeft />
           </div>
         </div>
       </header>

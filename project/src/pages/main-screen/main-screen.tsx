@@ -1,21 +1,25 @@
-import Card from '../components/card/card';
-import HeaderLeft from '../components/header-left/header-left';
-import HeaderNav from '../components/header-nav/header-nav';
-
-type MainScreenProps = {
-  offersCount: number | null;
-};
+import Card from '../../components/card/card';
+import { Offer } from '../../types/types';
+import HeaderLeft from '../../components/header-left/header-left';
+import HeaderNav from '../../components/header-nav/header-nav';
+import { Helmet } from 'react-helmet-async';
+import { HEADERTITLE } from '../../const';
 
 export default function MainScreen({
-  offersCount,
-}: MainScreenProps): JSX.Element {
+  offers,
+}: {
+  offers: Offer[];
+}): JSX.Element {
   return (
     <div className="page page--gray page--main">
+      <Helmet>
+        <title>{HEADERTITLE[0]} {HEADERTITLE[1]}</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <HeaderLeft />
-            <HeaderNav/>
+            <HeaderNav />
           </div>
         </div>
       </header>
@@ -90,12 +94,9 @@ export default function MainScreen({
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {Array(offersCount)
-                  .fill(null)
-                  .map((x, card) => card)
-                  .map((card) => (
-                    <Card key={card.toString()} />
-                  ))}
+                {offers.map((item) => (
+                  <Card key={item.id} />
+                ))}
               </div>
             </section>
             <div className="cities__right-section">
