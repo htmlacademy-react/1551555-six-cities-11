@@ -1,3 +1,4 @@
+import 
 export default function Card(): JSX.Element {
   return (
     <article className="cities__card place-card">
