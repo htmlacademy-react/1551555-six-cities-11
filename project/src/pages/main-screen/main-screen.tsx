@@ -3,7 +3,7 @@ import { Offer } from '../../types/types';
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
-import { HEADERTITLE } from '../../const';
+import { HeaderTitle} from '../../const';
 
 export default function MainScreen({
   offers,
@@ -13,7 +13,7 @@ export default function MainScreen({
   return (
     <div className="page page--gray page--main">
       <Helmet>
-        <title>{HEADERTITLE[0]} {HEADERTITLE[1]}</title>
+        <title>{HeaderTitle['6Cities']} {HeaderTitle.Main}</title>
       </Helmet>
       <header className="header">
         <div className="container">
