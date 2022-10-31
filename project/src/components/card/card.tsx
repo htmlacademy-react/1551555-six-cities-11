@@ -1,5 +1,8 @@
-import 
-export default function Card(): JSX.Element {
+// import { offers } from '../../mocks/offers';
+import { Offer } from '../../types/types';
+
+export default function Card(offers: { offers: Offer[] }): JSX.Element {
+  console.log(offers);
   return (
     <article className="cities__card place-card">
       <div className="cities__image-wrapper place-card__image-wrapper">
