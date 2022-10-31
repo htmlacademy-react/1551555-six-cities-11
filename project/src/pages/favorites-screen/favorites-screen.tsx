@@ -1,13 +1,13 @@
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import {Helmet} from 'react-helmet-async';
-import { HEADERTITLE } from '../../const';
+import { HeaderTitle } from '../../const';
 
 export default function FavoritesScreen(): JSX.Element {
   return (
     <div className="page">
       <Helmet>
-        <title>{HEADERTITLE[0]} {HEADERTITLE[3]}</title>
+        <title>{HeaderTitle['6Cities']} {HeaderTitle.Favorites}</title>
       </Helmet>
       <header className="header">
         <div className="container">

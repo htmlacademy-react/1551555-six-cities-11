@@ -11,10 +11,10 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const HEADERTITLE = [
-  '6 cities:',
-  'Главная cтраница',
-  'Авторизуйтись',
-  'Избранное',
-  'Предложение',
-];
+export enum HeaderTitle {
+  '6Cities'='6 Cities:',
+  Main='Главная cтраница',
+  Authorization='Авторизуйтись',
+  Favorites='Избранное',
+  Offer='Предложение',
+}
