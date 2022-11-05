@@ -25,8 +25,8 @@ export default function App({
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivatRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-                <FavoritesScreen />
+              <PrivatRoute authorizationStatus={AuthorizationStatus.Auth}>
+                <FavoritesScreen offers={propsOffers}/>
               </PrivatRoute>
             }
           />

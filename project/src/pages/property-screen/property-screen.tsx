@@ -1,19 +1,22 @@
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
-import {Helmet} from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { HeaderTitle } from '../../const';
+import Review from '../../components/review/review';
 
 export default function PropertyScreen(): JSX.Element {
   return (
     <div className="page">
       <Helmet>
-        <title>{HeaderTitle['6Cities']} {HeaderTitle.Offer}</title>
+        <title>
+          {HeaderTitle['6Cities']} {HeaderTitle.Offer}
+        </title>
       </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
-            <HeaderLeft/>
-            <HeaderNav/>
+            <HeaderLeft />
+            <HeaderNav />
           </div>
         </div>
       </header>
@@ -280,13 +283,7 @@ export default function PropertyScreen(): JSX.Element {
                       </svg>
                     </label>
                   </div>
-                  <textarea
-                    className="reviews__textarea form__textarea"
-                    id="review"
-                    name="review"
-                    placeholder="Tell how was your stay, what you like and what can be improved"
-                    defaultValue={''}
-                  />
+                  <Review />
                   <div className="reviews__button-wrapper">
                     <p className="reviews__help">
                       To submit review please make sure to set{' '}
