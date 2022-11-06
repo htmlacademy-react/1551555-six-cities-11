@@ -14,6 +14,7 @@ export default function Review() {
       placeholder="Tell how was your stay, what you like and what can be improved"
       defaultValue={''}
       onChange={handleTextareaChange}
+      value={review}
     />
   );
 }
