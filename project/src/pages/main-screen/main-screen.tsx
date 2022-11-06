@@ -3,17 +3,22 @@ import { Offer } from '../../types/types';
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
-import { HeaderTitle} from '../../const';
+import { HeaderTitle } from '../../const';
 
 export default function MainScreen({
   offers,
 }: {
   offers: Offer[];
 }): JSX.Element {
+  const offerList = offers.map((filmData) => (
+    <Card key={filmData.id} {...filmData} />
+  ));
   return (
     <div className="page page--gray page--main">
       <Helmet>
-        <title>{HeaderTitle['6Cities']} {HeaderTitle.Main}</title>
+        <title>
+          {HeaderTitle['6Cities']} {HeaderTitle.Main}
+        </title>
       </Helmet>
       <header className="header">
         <div className="container">
@@ -94,9 +99,7 @@ export default function MainScreen({
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {offers.map((item) => (
-                  <Card key={item.id} />
-                ))}
+                {offerList}
               </div>
             </section>
             <div className="cities__right-section">

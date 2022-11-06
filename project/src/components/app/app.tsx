@@ -5,14 +5,14 @@ import PropertyScreen from '../../pages/property-screen/property-screen';
 import Error404 from '../../pages/error-404/error-404';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import PrivatRoute from '../private-route/private-route';
+import PrivateRoute from '../private-route/private-route';
 import { Offer } from '../../types/types';
 import { HelmetProvider } from 'react-helmet-async';
 
 export default function App({
-  propsOffers,
+  offers,
 }: {
-  propsOffers: Offer[];
+  offers: Offer[];
 }): JSX.Element {
   return (
     <HelmetProvider>
@@ -20,14 +20,14 @@ export default function App({
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainScreen offers={propsOffers} />}
+            element={<MainScreen offers={offers} />}
           />
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivatRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-                <FavoritesScreen />
-              </PrivatRoute>
+              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                <FavoritesScreen offers={offers}/>
+              </PrivateRoute>
             }
           />
           <Route path={AppRoute.Room} element={<PropertyScreen />} />

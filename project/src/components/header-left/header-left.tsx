@@ -1,7 +1,13 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+
 export default function HeaderLeft(): JSX.Element {
   return (
     <div className="header__left">
-      <a className="header__logo-link header__logo-link--active">
+      <Link
+        className="header__logo-link header__logo-link--active"
+        to={AppRoute.Main}
+      >
         <img
           className="header__logo"
           src="img/logo.svg"
@@ -9,7 +15,7 @@ export default function HeaderLeft(): JSX.Element {
           width="81"
           height="41"
         />
-      </a>
+      </Link>
     </div>
   );
 }
