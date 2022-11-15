@@ -1,17 +1,28 @@
-import { useState } from 'react';
+import { SyntheticEvent } from 'react';
 import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/types';
 
-export default function Card({ image, price, name, type }: Offer): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isActive, setActive] = useState(false);
+type OfferProps = Offer & { onListItemHover: (listItemName: string) => void };
+
+export default function Card({
+  image,
+  price,
+  name,
+  type,
+  id,
+  onListItemHover,
+}: OfferProps): JSX.Element {
+  const handleListItemMouseenter = (e: SyntheticEvent) => {
+    e.preventDefault();
+    onListItemHover(e.currentTarget.id);
+  };
 
   return (
     <article
       className="cities__card place-card"
-      onMouseOver={() => setActive(true)}
-      onMouseOut={() => setActive(false)}
+      id={id}
+      onMouseEnter={handleListItemMouseenter}
     >
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={AppRoute.Room}>

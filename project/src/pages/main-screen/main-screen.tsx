@@ -1,17 +1,26 @@
+import { useState } from 'react';
 import Card from '../../components/card/card';
-import { Offer } from '../../types/types';
+import { AppProps, Offer } from '../../types/types';
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
 import { HeaderTitle } from '../../const';
+import Map from '../../components/map/map';
 
-export default function MainScreen({
-  offers,
-}: {
-  offers: Offer[];
-}): JSX.Element {
+export default function MainScreen(props: AppProps): JSX.Element {
+  const { offers, city } = props;
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
+    undefined
+  );
+
+  const onListItemHover = (listItemName: string) => {
+    const currentOffer = offers.find((offer) => offer.id === listItemName);
+
+    setSelectedOffer(currentOffer);
+  };
+
   const offerList = offers.map((filmData) => (
-    <Card key={filmData.id} {...filmData} />
+    <Card key={filmData.id} {...filmData} onListItemHover={onListItemHover} />
   ));
   return (
     <div className="page page--gray page--main">
@@ -103,7 +112,13 @@ export default function MainScreen({
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map
+                  city={city}
+                  offers={offers}
+                  selectedOffer={selectedOffer}
+                />
+              </section>
             </div>
           </div>
         </div>
