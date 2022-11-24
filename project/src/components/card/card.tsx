@@ -3,7 +3,10 @@ import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/types';
 
-type OfferProps = Offer & { onListItemHover: (listItemName: string) => void };
+type OfferProps = Offer & {
+  onListItemHover: (listItemName: string) => void;
+  onMouseLeave: () => void;
+};
 
 export default function Card({
   image,
@@ -12,6 +15,7 @@ export default function Card({
   type,
   id,
   onListItemHover,
+  onMouseLeave = () => void 0,
 }: OfferProps): JSX.Element {
   const handleListItemMouseenter = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -23,6 +27,7 @@ export default function Card({
       className="cities__card place-card"
       id={id}
       onMouseEnter={handleListItemMouseenter}
+      onMouseLeave={onMouseLeave}
     >
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={AppRoute.Room}>

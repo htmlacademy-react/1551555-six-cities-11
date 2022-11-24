@@ -1,5 +1,6 @@
 export type Offer = {
   id: string;
+  cityName:string;
   image: string;
   price: number;
   name: string;
@@ -18,8 +19,8 @@ export type City = {
 export type Offers = Offer[];
 
 export type AppProps = {
-  city: City;
+  cities: City[];
   offers: Offer[];
 };
 
-
+export type Cities = City[];

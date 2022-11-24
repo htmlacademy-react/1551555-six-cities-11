@@ -6,34 +6,19 @@ import Error404 from '../../pages/error-404/error-404';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
-import { AppProps } from '../../types/types';
 import { HelmetProvider } from 'react-helmet-async';
-// import { offers} from '../../mocks/offers';
-// import { cities } from '../../mocks/city';
 
-export default function App(
-  //   {
-  //   offers,
-  // }: {
-  //   offers: Offer[];
-  // }
-  props: AppProps
-): JSX.Element {
-  const { city, offers } = props;
-
+export default function App(): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route
-            path={AppRoute.Main}
-            element={<MainScreen offers={offers} city={city} />}
-          />
+          <Route path={AppRoute.Main} element={<MainScreen />} />
           <Route
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <FavoritesScreen offers={offers} />
+                <FavoritesScreen />
               </PrivateRoute>
             }
           />

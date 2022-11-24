@@ -1,26 +1,47 @@
 import { useState } from 'react';
 import Card from '../../components/card/card';
-import { AppProps, Offer } from '../../types/types';
+import { Offer } from '../../types/types';
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
 import { HeaderTitle } from '../../const';
 import Map from '../../components/map/map';
+import FilterOffer from '../../components/filter-offer/filter-offer';
+import { useAppSelector } from '../../hooks';
 
-export default function MainScreen(props: AppProps): JSX.Element {
-  const { offers, city } = props;
+export default function MainScreen(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
+  const cities = useAppSelector((state) => state.cities);
+  const selectedCity = useAppSelector((state) => state.city);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
     undefined
   );
 
   const onListItemHover = (listItemName: string) => {
     const currentOffer = offers.find((offer) => offer.id === listItemName);
-
     setSelectedOffer(currentOffer);
   };
+  const onListItemHoverLeave = () => {
+    setSelectedOffer(undefined);
+  };
 
-  const offerList = offers.map((filmData) => (
-    <Card key={filmData.id} {...filmData} onListItemHover={onListItemHover} />
+  const CityList = cities.map((cityData) => (
+    <FilterOffer key={cityData.name} {...cityData} />
+  ));
+  const filterOffer = useAppSelector((state) =>
+    state.offers.filter((offer) => offer.cityName === selectedCity)
+  );
+  const [filterCities] = useAppSelector((state) =>
+    state.cities.filter((city1) => city1.name === selectedCity)
+  );
+
+  const offerList = filterOffer.map((offerData) => (
+    <Card
+      key={offerData.id}
+      {...offerData}
+      onListItemHover={onListItemHover}
+      onMouseLeave={onListItemHoverLeave}
+    />
   ));
   return (
     <div className="page page--gray page--main">
@@ -42,45 +63,16 @@ export default function MainScreen(props: AppProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <ul className="locations__list tabs__list">{CityList}</ul>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">
+                {filterOffer.length} places to stay in {filterCities.name}
+              </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -114,8 +106,8 @@ export default function MainScreen(props: AppProps): JSX.Element {
             <div className="cities__right-section">
               <section className="cities__map map">
                 <Map
-                  city={city}
-                  offers={offers}
+                  city={filterCities}
+                  offers={filterOffer}
                   selectedOffer={selectedOffer}
                 />
               </section>
