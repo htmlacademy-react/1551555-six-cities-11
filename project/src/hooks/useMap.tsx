@@ -7,6 +7,10 @@ export default function useMap(
   city: City
 ): Map | null {
   const [map, setMap] = useState<Map | null>(null);
+  //   mapRef: MutableRefObject<HTMLElement | string>,
+  //   city: City
+  // ): Map | string {
+  //   const [map, setMap] = useState<Map | string>(' ');
   const isRenderedRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -31,7 +35,7 @@ export default function useMap(
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, city]);
+  }, [mapRef, city, map]);
 
   return map;
 }

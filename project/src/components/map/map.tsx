@@ -30,9 +30,9 @@ export default function Map({
 }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
-
   useEffect(() => {
     if (map) {
+      const { lat, lng } = city;
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.lat,
@@ -47,8 +47,9 @@ export default function Map({
           )
           .addTo(map);
       });
+      map.setView({ lat, lng });
     }
-  }, [map, offers, selectedOffer]);
+  }, [map, offers, city, selectedOffer]);
 
   return <div style={{ height: '100%' }} ref={mapRef}></div>;
 }

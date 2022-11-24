@@ -2,15 +2,12 @@ import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
 import { AppRoute, HeaderTitle } from '../../const';
-import { Offer } from '../../types/types';
 import CardFavorites from '../../components/card-favorits/card-favorites';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 
-export default function FavoritesScreen({
-  offers,
-}: {
-  offers: Offer[];
-}): JSX.Element {
+export default function FavoritesScreen(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   const offerList = offers.map((filmData) => (
     <CardFavorites key={filmData.id} {...filmData} />
   ));
