@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 export default function CardFavorites({
-  image,
+  previewImage,
   price,
-  name,
+  title,
   type,
 }: Offer): JSX.Element {
   return (
@@ -17,7 +17,7 @@ export default function CardFavorites({
         <Link to={AppRoute.Room}>
           <img
             className="place-card__image"
-            src={image}
+            src={previewImage}
             width="150"
             height="110"
             alt="Place image"
@@ -47,7 +47,7 @@ export default function CardFavorites({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={AppRoute.Room}>{name}</Link>
+          <Link to={AppRoute.Room}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

@@ -29,14 +29,16 @@ export default function Map({
   selectedOffer,
 }: MapProps): JSX.Element {
   const mapRef = useRef(null);
+
   const map = useMap(mapRef, city);
+
   useEffect(() => {
     if (map) {
       const { lat, lng } = city;
       offers.forEach((offer) => {
         const marker = new Marker({
-          lat: offer.lat,
-          lng: offer.lng,
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
         });
         marker
 

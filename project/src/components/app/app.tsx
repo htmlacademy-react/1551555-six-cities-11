@@ -7,13 +7,19 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import { useAppSelector } from '../../hooks';
 
 export default function App(): JSX.Element {
+  const { isDataLoading } = useAppSelector((state) => state);
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Main} element={<MainScreen />} />
+          <Route
+            path={AppRoute.Main}
+            element={isDataLoading ? <LoadingScreen /> : <MainScreen />}
+          />
           <Route
             path={AppRoute.Favorites}
             element={
