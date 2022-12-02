@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { Offer } from '../../types/types';
 
 type OfferProps = Offer & {
-  onListItemHover: (listItemName: string) => void;
+  onListItemHover: (listItemName: number) => void;
   onMouseLeave: () => void;
 };
 
 export default function Card({
-  image,
+  previewImage,
   price,
-  name,
+  title,
   type,
   id,
   onListItemHover,
@@ -19,13 +19,12 @@ export default function Card({
 }: OfferProps): JSX.Element {
   const handleListItemMouseenter = (e: SyntheticEvent) => {
     e.preventDefault();
-    onListItemHover(e.currentTarget.id);
+    onListItemHover(id);
   };
 
   return (
     <article
       className="cities__card place-card"
-      id={id}
       onMouseEnter={handleListItemMouseenter}
       onMouseLeave={onMouseLeave}
     >
@@ -33,7 +32,7 @@ export default function Card({
         <Link to={AppRoute.Room}>
           <img
             className="place-card__image"
-            src={image}
+            src={previewImage}
             width="260"
             height="200"
             alt="Place image"
@@ -63,7 +62,7 @@ export default function Card({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={AppRoute.Room}>{name}</Link>
+          <Link to={AppRoute.Room}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

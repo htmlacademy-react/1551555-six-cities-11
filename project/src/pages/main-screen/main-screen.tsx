@@ -4,20 +4,19 @@ import { Offer } from '../../types/types';
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
-import { HeaderTitle } from '../../const';
+import { HeaderTitle, cities } from '../../const';
 import Map from '../../components/map/map';
 import FilterOffer from '../../components/filter-offer/filter-offer';
 import { useAppSelector } from '../../hooks';
 
 export default function MainScreen(): JSX.Element {
   const offers = useAppSelector((state) => state.offers);
-  const cities = useAppSelector((state) => state.cities);
   const selectedCity = useAppSelector((state) => state.city);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
     undefined
   );
 
-  const onListItemHover = (listItemName: string) => {
+  const onListItemHover = (listItemName: number) => {
     const currentOffer = offers.find((offer) => offer.id === listItemName);
     setSelectedOffer(currentOffer);
   };
@@ -29,10 +28,10 @@ export default function MainScreen(): JSX.Element {
     <FilterOffer key={cityData.name} {...cityData} />
   ));
   const filterOffer = useAppSelector((state) =>
-    state.offers.filter((offer) => offer.cityName === selectedCity)
+    state.offers.filter((offer) => offer.city.name === selectedCity)
   );
   const [filterCities] = useAppSelector((state) =>
-    state.cities.filter((city1) => city1.name === selectedCity)
+    cities.filter((city) => city.name === selectedCity)
   );
 
   const offerList = filterOffer.map((offerData) => (
@@ -71,7 +70,7 @@ export default function MainScreen(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {filterOffer.length} places to stay in {filterCities.name}
+                {filterOffer.length} places to stay in {selectedCity}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>

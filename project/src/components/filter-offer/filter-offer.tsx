@@ -1,7 +1,7 @@
-import { City } from '../../types/types';
 import { useAppDispatch } from '../../hooks';
 import { activeCity } from '../../store/action';
 import { SyntheticEvent } from 'react';
+import { City } from '../../types/types';
 
 export default function FilterOffer({ name }: City) {
   const dispatch = useAppDispatch();
@@ -11,7 +11,7 @@ export default function FilterOffer({ name }: City) {
       onClick={(e: SyntheticEvent) => dispatch(activeCity(name))}
     >
       <a className="locations__item-link tabs__item" href="#">
-        <span>{name}</span>
+        <span> {name}</span>
       </a>
     </li>
   );
