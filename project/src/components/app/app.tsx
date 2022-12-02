@@ -3,27 +3,39 @@ import LoginScreen from '../../pages/login-screen/login-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import PropertyScreen from '../../pages/property-screen/property-screen';
 import Error404 from '../../pages/error-404/error-404';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { useAppSelector } from '../../hooks';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 export default function App(): JSX.Element {
-  const { isDataLoading } = useAppSelector((state) => state);
+  const isOffersDataLoading = useAppSelector(
+    (state) => state.isOffersDataLoading
+  );
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+
+  if (
+    authorizationStatus === AuthorizationStatus.Unknown ||
+    isOffersDataLoading
+  ) {
+    return <LoadingScreen />;
+  }
+
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
-          <Route
-            path={AppRoute.Main}
-            element={isDataLoading ? <LoadingScreen /> : <MainScreen />}
-          />
+          <Route path={AppRoute.Main} element={<MainScreen />} />
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <PrivateRoute authorizationStatus={authorizationStatus}>
                 <FavoritesScreen />
               </PrivateRoute>
             }
@@ -32,7 +44,7 @@ export default function App(): JSX.Element {
           <Route path={AppRoute.Login} element={<LoginScreen />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
