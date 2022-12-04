@@ -71,3 +71,4 @@ export const cities = [
 ];
 
 export const DEFAULT_CITY = 'Paris';
+export const TIMEOUT_SHOW_ERROR = 2000;
