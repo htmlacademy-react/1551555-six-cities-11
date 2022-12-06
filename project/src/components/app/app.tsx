@@ -4,26 +4,25 @@ import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import PropertyScreen from '../../pages/property-screen/property-screen';
 import Error404 from '../../pages/error-404/error-404';
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { useAppSelector } from '../../hooks';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
+import {
+  getAuthorizationStatus,
+  getAuthCheckedStatus,
+} from '../../store/user-process/selectors';
+import { getOffersLoadingStatus } from '../../store/app-data/selectors';
 
 export default function App(): JSX.Element {
-  const isOffersDataLoading = useAppSelector(
-    (state) => state.isOffersDataLoading
-  );
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
 
-  if (
-    authorizationStatus === AuthorizationStatus.Unknown ||
-    isOffersDataLoading
-  ) {
+  if (!isAuthChecked || isOffersDataLoading) {
     return <LoadingScreen />;
   }
 

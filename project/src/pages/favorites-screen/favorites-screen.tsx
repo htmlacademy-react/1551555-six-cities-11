@@ -5,9 +5,10 @@ import { AppRoute, HeaderTitle } from '../../const';
 import CardFavorites from '../../components/card-favorits/card-favorites';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
+import { getOffers } from '../../store/app-data/selectors';
 
 export default function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(getOffers);
   const offerList = offers.map((filmData) => (
     <CardFavorites key={filmData.id} {...filmData} />
   ));

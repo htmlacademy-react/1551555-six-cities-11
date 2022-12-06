@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks';
-import { activeCity } from '../../store/action';
+import { activeCity } from '../../store/app-process/app-process';
 import { SyntheticEvent } from 'react';
 import { City } from '../../types/types';
 

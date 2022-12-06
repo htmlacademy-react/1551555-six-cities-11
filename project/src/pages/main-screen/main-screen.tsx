@@ -8,10 +8,13 @@ import { HeaderTitle, cities } from '../../const';
 import Map from '../../components/map/map';
 import FilterOffer from '../../components/filter-offer/filter-offer';
 import { useAppSelector } from '../../hooks';
+import { selectorOffers, getOffers } from '../../store/app-data/selectors';
+import { getCity } from '../../store/app-process/selectors';
 
 export default function MainScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
-  const selectedCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector(getOffers);
+  const filterOffers = useAppSelector(selectorOffers);
+  const selectedCity = useAppSelector(getCity);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
     undefined
   );
@@ -27,14 +30,12 @@ export default function MainScreen(): JSX.Element {
   const CityList = cities.map((cityData) => (
     <FilterOffer key={cityData.name} {...cityData} />
   ));
-  const filterOffer = useAppSelector((state) =>
-    state.offers.filter((offer) => offer.city.name === selectedCity)
-  );
+
   const [filterCities] = useAppSelector((state) =>
     cities.filter((city) => city.name === selectedCity)
   );
 
-  const offerList = filterOffer.map((offerData) => (
+  const offerList = filterOffers.map((offerData) => (
     <Card
       key={offerData.id}
       {...offerData}
@@ -70,7 +71,7 @@ export default function MainScreen(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {filterOffer.length} places to stay in {selectedCity}
+                {filterOffers.length} places to stay in {selectedCity}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
@@ -106,7 +107,7 @@ export default function MainScreen(): JSX.Element {
               <section className="cities__map map">
                 <Map
                   city={filterCities}
-                  offers={filterOffer}
+                  offers={filterOffers}
                   selectedOffer={selectedOffer}
                 />
               </section>
