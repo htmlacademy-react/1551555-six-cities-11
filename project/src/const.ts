@@ -26,11 +26,8 @@ export enum APIRoute {
   Comments = '/comments',
 }
 
-export const URL_MARKER_DEFAULT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
-
-export const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+export const URL_MARKER_DEFAULT = 'img/pin.svg';
+export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 
 export const cities = [
   {
@@ -78,4 +75,11 @@ export enum NameSpace {
   Data = 'DATA',
   City = 'CITY',
   User = 'USER',
+}
+
+export enum Sorting {
+  Popular = 'Popular',
+  PriceIncrease = 'Price: low to high',
+  PriceDecrease = 'Price: high to low',
+  TopRated = 'Top rated first',
 }

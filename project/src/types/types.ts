@@ -63,3 +63,5 @@ export type Comment = {
 };
 
 export type Comments = Comment[];
+
+export type SortName = string[];
