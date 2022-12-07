@@ -1,7 +1,7 @@
-import { DEFAULT_CITY, NameSpace } from '../../const';
+import { DEFAULT_CITY, NameSpace, Sorter } from '../../const';
 import { State } from '../../types/state';
 import { Offers, Comments } from '../../types/types';
-import { getCity } from '../app-process/selectors';
+import { getCity, getSort } from '../app-process/selectors';
 import { createSelector } from 'reselect';
 
 export const getOffers = (state: State): Offers => state[NameSpace.Data].offers;
@@ -12,9 +12,9 @@ export const getComments = (state: State): Comments =>
 export const getNearbyOffers = (state: State): Offers =>
   state[NameSpace.Data].nearbyOffers;
 export const selectorOffers = createSelector(
-  [getOffers, getCity],
-  (offers, city) =>
+  [getOffers, getCity, getSort],
+  (offers, city, sorting) =>
     city === DEFAULT_CITY
-      ? offers.filter((offer) => offer.city.name === DEFAULT_CITY)
-      : offers.filter((offer) => offer.city.name === city)
+      ? offers.filter((offer) => offer.city.name === DEFAULT_CITY).sort(Sorter[sorting])
+      : offers.filter((offer) => offer.city.name === city).sort(Sorter[sorting])
 );

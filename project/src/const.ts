@@ -1,3 +1,5 @@
+import { SortName, Offer } from './types/types';
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -16,7 +18,7 @@ export enum HeaderTitle {
   Main = 'Главная cтраница',
   Authorization = 'Авторизуйтись',
   Favorites = 'Избранное',
-  Offer = 'Предложение',
+  Offers = 'Предложение',
 }
 
 export enum APIRoute {
@@ -73,7 +75,7 @@ export const TIMEOUT_SHOW_ERROR = 2000;
 
 export enum NameSpace {
   Data = 'DATA',
-  City = 'CITY',
+  Process = 'PROCESS',
   User = 'USER',
 }
 
@@ -83,3 +85,12 @@ export enum Sorting {
   PriceDecrease = 'Price: high to low',
   TopRated = 'Top rated first',
 }
+
+export const Sorter: {
+  [key in SortName]: (a: Offer, b: Offer) => number;
+} = {
+  Popular: () => 0,
+  PriceIncrease: (a, b) => a.price - b.price,
+  PriceDecrease: (a, b) => b.price - a.price,
+  TopRated: (a, b) => b.rating - a.rating,
+};

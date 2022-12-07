@@ -24,7 +24,7 @@ export default function PropertyScreen(): JSX.Element {
     <div className="page">
       <Helmet>
         <title>
-          {HeaderTitle['6Cities']} {HeaderTitle.Offer}
+          {HeaderTitle['6Cities']} {HeaderTitle.Offers}
         </title>
       </Helmet>
       <header className="header">

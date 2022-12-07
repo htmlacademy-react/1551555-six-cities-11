@@ -1,3 +1,5 @@
+import { Sorting } from '../const';
+
 export type City = {
   name: string;
   lat: number;
@@ -63,5 +65,4 @@ export type Comment = {
 };
 
 export type Comments = Comment[];
-
-export type SortName = string[];
+export type SortName = keyof typeof Sorting;

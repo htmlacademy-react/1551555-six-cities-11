@@ -1,6 +1,6 @@
 import { store } from '../store/index';
 import { AuthorizationStatus } from '../const';
-import { Offers, Comments } from './types';
+import { Offers, Comments, SortName } from './types';
 
 export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -17,4 +17,5 @@ export type AppData = {
 
 export type AppProcess = {
   city: string;
+  sorting: SortName;
 };
