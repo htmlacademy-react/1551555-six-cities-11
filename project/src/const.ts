@@ -1,3 +1,5 @@
+import { SortName, Offer } from './types/types';
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -16,7 +18,7 @@ export enum HeaderTitle {
   Main = 'Главная cтраница',
   Authorization = 'Авторизуйтись',
   Favorites = 'Избранное',
-  Offer = 'Предложение',
+  Offers = 'Предложение',
 }
 
 export enum APIRoute {
@@ -26,11 +28,8 @@ export enum APIRoute {
   Comments = '/comments',
 }
 
-export const URL_MARKER_DEFAULT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
-
-export const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+export const URL_MARKER_DEFAULT = 'img/pin.svg';
+export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 
 export const cities = [
   {
@@ -76,6 +75,22 @@ export const TIMEOUT_SHOW_ERROR = 2000;
 
 export enum NameSpace {
   Data = 'DATA',
-  City = 'CITY',
+  Process = 'PROCESS',
   User = 'USER',
 }
+
+export enum Sorting {
+  Popular = 'Popular',
+  PriceIncrease = 'Price: low to high',
+  PriceDecrease = 'Price: high to low',
+  TopRated = 'Top rated first',
+}
+
+export const Sorter: {
+  [key in SortName]: (a: Offer, b: Offer) => number;
+} = {
+  Popular: () => 0,
+  PriceIncrease: (a, b) => a.price - b.price,
+  PriceDecrease: (a, b) => b.price - a.price,
+  TopRated: (a, b) => b.rating - a.rating,
+};
