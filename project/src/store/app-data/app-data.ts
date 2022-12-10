@@ -1,11 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { AppData } from '../../types/state';
-import { fetchOffersAction } from '../api-actions';
+import {
+  fetchOffersAction,
+  fetchCommentsAction,
+  fetchNearbyOffers,
+} from '../api-actions';
 
 const initialState: AppData = {
   offers: [],
   isOffersDataLoading: false,
+  comments: [],
+  nearbyOffers: [],
 };
 
 export const appData = createSlice({
@@ -20,6 +26,12 @@ export const appData = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.isOffersDataLoading = false;
+      })
+      .addCase(fetchCommentsAction.fulfilled, (state, action) => {
+        state.comments = action.payload;
+      })
+      .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
+        state.nearbyOffers = action.payload;
       });
   },
 });

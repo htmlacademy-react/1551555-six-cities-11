@@ -48,3 +48,18 @@ export type AppProps = {
 };
 
 export type Cities = City[];
+
+export type Comment = {
+  comment: string;
+  date: string;
+  id: number;
+  rating: number;
+  user: {
+    avatarUrl: string;
+    id: number;
+    isPro: boolean;
+    name: string;
+  };
+};
+
+export type Comments = Comment[];
