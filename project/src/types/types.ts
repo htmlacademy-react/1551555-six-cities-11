@@ -1,22 +1,17 @@
 import { Sorting } from '../const';
 
 export type City = {
+  location: {
+    latitude: number;
+    longitude: number;
+    zoom: number;
+  };
   name: string;
-  lat: number;
-  lng: number;
-  zoom: number;
 };
 
 export type Offer = {
   bedrooms: number;
-  city: {
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
-    name: string;
-  };
+  city: City;
   description: string;
   goods: [string];
   host: {

@@ -34,7 +34,8 @@ export default function Map({
 
   useEffect(() => {
     if (map) {
-      const { lat, lng } = city;
+      const { latitude: lat, longitude: lng } = city.location;
+
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,

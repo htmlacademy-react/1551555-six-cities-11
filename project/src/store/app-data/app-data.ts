@@ -4,7 +4,7 @@ import { AppData } from '../../types/state';
 import {
   fetchOffersAction,
   fetchCommentsAction,
-  fetchNearbyOffers,
+  fetchNearbyOffers, fetchOfferAction
 } from '../api-actions';
 
 const initialState: AppData = {
@@ -12,6 +12,8 @@ const initialState: AppData = {
   isOffersDataLoading: false,
   comments: [],
   nearbyOffers: [],
+  offer: null,
+  isOfferLoading: false,
 };
 
 export const appData = createSlice({
@@ -32,6 +34,16 @@ export const appData = createSlice({
       })
       .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
         state.nearbyOffers = action.payload;
+      })
+      .addCase(fetchOfferAction.pending, (state) => {
+        state.isOfferLoading = true;
+      })
+      .addCase(fetchOfferAction.fulfilled, (state, action) => {
+        state.offer = action.payload;
+        state.isOfferLoading = false;
       });
+      // .addCase(fetchOfferAction.rejected, (state) => {
+      //   state.isOfferLoading = false;
+      // });
   },
 });

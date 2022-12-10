@@ -7,15 +7,14 @@ import {
   fetchOffersAction,
   checkAuthAction,
   fetchCommentsAction,
-  fetchNearbyOffers,
+  fetchNearbyOffers, fetchOfferAction
 } from './store/api-actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 store.dispatch(fetchOffersAction());
-store.dispatch(fetchCommentsAction(5));
-store.dispatch(fetchNearbyOffers(1));
 store.dispatch(checkAuthAction());
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

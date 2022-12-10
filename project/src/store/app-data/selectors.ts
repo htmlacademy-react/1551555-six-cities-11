@@ -1,6 +1,6 @@
 import { DEFAULT_CITY, NameSpace, Sorter } from '../../const';
 import { State } from '../../types/state';
-import { Offers, Comments } from '../../types/types';
+import { Offers, Comments, Offer } from '../../types/types';
 import { getCity, getSort } from '../app-process/selectors';
 import { createSelector } from 'reselect';
 
@@ -15,6 +15,12 @@ export const selectorOffers = createSelector(
   [getOffers, getCity, getSort],
   (offers, city, sorting) =>
     city === DEFAULT_CITY
-      ? offers.filter((offer) => offer.city.name === DEFAULT_CITY).sort(Sorter[sorting])
+      ? offers
+          .filter((offer) => offer.city.name === DEFAULT_CITY)
+          .sort(Sorter[sorting])
       : offers.filter((offer) => offer.city.name === city).sort(Sorter[sorting])
 );
+export const getOffer = (state: State): Offer | null =>
+  state[NameSpace.Data].offer;
+export const getOfferLoadingStatus = (state: State): boolean =>
+  state[NameSpace.Data].isOfferLoading;
