@@ -1,5 +1,5 @@
 import { store } from '../store/index';
-import { AuthorizationStatus } from '../const';
+import { AuthorizationStatus, SubmitStatus } from '../const';
 import { Offers, Comments, SortName, Offer } from './types';
 
 export type State = ReturnType<typeof store.getState>;
@@ -13,8 +13,9 @@ export type AppData = {
   isOffersDataLoading: boolean;
   comments: Comments;
   nearbyOffers: Offers;
-  offer: Offer| null;
+  offer: Offer | null;
   isOfferLoading: boolean;
+  commentStatus: SubmitStatus;
 };
 
 export type AppProcess = {

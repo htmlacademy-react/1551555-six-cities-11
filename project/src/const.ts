@@ -107,3 +107,16 @@ export const Sorter: {
   PriceDecrease: (a, b) => b.price - a.price,
   TopRated: (a, b) => b.rating - a.rating,
 };
+
+export enum SubmitStatus {
+  Still = 'STILL',
+  Pending = 'PENDING',
+  Fullfilled = 'FULLFILLED',
+  Rejected = 'REJECTED',
+}
+
+export const MAX_COMMENTS = 10;
+export const STARS_COUNT = 5;
+export const MIN_COMMENT_LENGTH = 50;
+export const MAX_COMMENT_LENGTH = 300;
+export const ONE_STAR_PERSENT = 20;

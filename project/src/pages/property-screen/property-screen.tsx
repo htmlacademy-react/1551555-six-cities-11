@@ -1,13 +1,12 @@
-/* eslint-disable no-console */
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
-import { HeaderTitle } from '../../const';
+import { HeaderTitle, AuthorizationStatus } from '../../const';
 import ReviewsItem from '../../components/reviews-item/reviews-item';
 import Review from '../../components/review/review';
 import { useAppSelector } from '../../hooks';
 import {
-  getComments,
+  limitingComments,
   getNearbyOffers,
   getOffer,
   getOfferLoadingStatus,
@@ -24,10 +23,12 @@ import {
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 export default function PropertyScreen(): JSX.Element | null {
   const offer = useAppSelector(getOffer);
-  const reviews = useAppSelector(getComments);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const reviews = useAppSelector(limitingComments);
   const nearbyOffers = useAppSelector(getNearbyOffers);
   const { id } = useParams();
   const isOfferLoading = useAppSelector(getOfferLoadingStatus);
@@ -181,98 +182,8 @@ export default function PropertyScreen(): JSX.Element | null {
                   <span className="reviews__amount">{reviewsList.length}</span>
                 </h2>
                 {reviewsList}
-                <form className="reviews__form form" action="#" method="post">
-                  <label
-                    className="reviews__label form__label"
-                    htmlFor="review"
-                  >
-                    Your review
-                  </label>
-                  <div className="reviews__rating-form form__rating">
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={5}
-                      id="5-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="5-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="perfect"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={4}
-                      id="4-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="4-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="good"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={3}
-                      id="3-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="3-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="not bad"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={2}
-                      id="2-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="2-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="badly"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={1}
-                      id="1-star"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="1-star"
-                      className="reviews__rating-label form__rating-label"
-                      title="terribly"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                  </div>
-                  <Review />
-                  
-                </form>
+
+                {authorizationStatus === AuthorizationStatus.Auth && <Review />}
               </section>
             </div>
           </div>

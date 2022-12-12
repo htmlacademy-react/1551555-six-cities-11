@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
@@ -8,6 +7,7 @@ import { APIRoute, AppRoute } from '../const';
 import { saveToken, dropToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
+import { CommentAuth } from '../types/comment-auth';
 
 export const fetchOffersAction = createAsyncThunk<
   Offers,
@@ -38,7 +38,7 @@ export const fetchCommentsAction = createAsyncThunk<
 
 export const postCommentAction = createAsyncThunk<
   Comments,
-  AuthData,
+  CommentAuth,
   {
     dispatch: AppDispatch;
     state: State;
@@ -46,13 +46,11 @@ export const postCommentAction = createAsyncThunk<
   }
 >(
   'data/postComment',
-async ({id, comment,rating}, { dispatch, extra: api }) => {
-    const { data } = await api.post<Comments>(`${APIRoute.Comments}/${id}`,
-    {
+  async ({ id, comment, rating }, { dispatch, extra: api }) => {
+    const { data } = await api.post<Comments>(`${APIRoute.Comments}/${id}`, {
       comment,
       rating,
-    }
-    );
+    });
     return data;
   }
 );
