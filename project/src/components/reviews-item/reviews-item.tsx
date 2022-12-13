@@ -1,7 +1,10 @@
 import { Comment } from '../../types/types';
+import { ONE_STAR_PERSENT } from '../../const';
+import dayjs from 'dayjs';
 
 export default function ReviewsItem(props: Comment): JSX.Element {
-  const { comment, user, date } = props;
+  const { comment, user, date, rating } = props;
+  const formatDate = dayjs(date).format('MMMM YYYY');
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
@@ -19,13 +22,13 @@ export default function ReviewsItem(props: Comment): JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{ width: '80%' }} />
+            <span style={{ width: `${rating * ONE_STAR_PERSENT}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <p className="reviews__text">{comment}</p>
         <time className="reviews__time" dateTime={date}>
-          {date}
+          {formatDate}
         </time>
       </div>
     </li>

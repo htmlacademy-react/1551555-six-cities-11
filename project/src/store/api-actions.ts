@@ -1,13 +1,13 @@
-/* eslint-disable no-console */
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
-import { Offers, Comments } from '../types/types.js';
+import { Offers, Comments, Offer } from '../types/types.js';
 import { redirectToRoute } from './action';
 import { APIRoute, AppRoute } from '../const';
 import { saveToken, dropToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
+import { CommentAuth } from '../types/comment-auth';
 
 export const fetchOffersAction = createAsyncThunk<
   Offers,
@@ -36,6 +36,25 @@ export const fetchCommentsAction = createAsyncThunk<
   return data;
 });
 
+export const postCommentAction = createAsyncThunk<
+  Comments,
+  CommentAuth,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'data/postComment',
+  async ({ id, comment, rating }, { dispatch, extra: api }) => {
+    const { data } = await api.post<Comments>(`${APIRoute.Comments}/${id}`, {
+      comment,
+      rating,
+    });
+    return data;
+  }
+);
+
 export const fetchNearbyOffers = createAsyncThunk<
   Offers,
   number,
@@ -46,6 +65,19 @@ export const fetchNearbyOffers = createAsyncThunk<
   }
 >('data/fetchNearbyOffers', async (id, { dispatch, extra: api }) => {
   const { data } = await api.get<Offers>(`${APIRoute.Offers}/${id}/nearby`);
+  return data;
+});
+
+export const fetchOfferAction = createAsyncThunk<
+  Offer,
+  number,
+  {
+    dispatsh: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchOffer', async (id, { dispatch, extra: api }) => {
+  const { data } = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
   return data;
 });
 

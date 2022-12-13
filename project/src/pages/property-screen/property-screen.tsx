@@ -1,25 +1,73 @@
 import HeaderLeft from '../../components/header-left/header-left';
 import HeaderNav from '../../components/header-nav/header-nav';
 import { Helmet } from 'react-helmet-async';
-import { HeaderTitle } from '../../const';
+import { HeaderTitle, AuthorizationStatus } from '../../const';
 import ReviewsItem from '../../components/reviews-item/reviews-item';
 import Review from '../../components/review/review';
 import { useAppSelector } from '../../hooks';
-import { getComments, getNearbyOffers } from '../../store/app-data/selectors';
+import {
+  limitingComments,
+  getNearbyOffers,
+  getOffer,
+  getOfferLoadingStatus,
+} from '../../store/app-data/selectors';
 import Map from '../../components/map/map';
-import { cities } from '../../const';
+import LoadingScreen from '../loading-screen/loading-screen';
 import Card from '../../components/card/card';
+import { store } from '../../store';
+import {
+  fetchOfferAction,
+  fetchCommentsAction,
+  fetchNearbyOffers,
+} from '../../store/api-actions';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { useEffect } from 'react';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
-export default function PropertyScreen(): JSX.Element {
-  const reviews = useAppSelector(getComments);
+export default function PropertyScreen(): JSX.Element | null {
+  const offer = useAppSelector(getOffer);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const reviews = useAppSelector(limitingComments);
   const nearbyOffers = useAppSelector(getNearbyOffers);
+  const { id } = useParams();
+  const isOfferLoading = useAppSelector(getOfferLoadingStatus);
+  const dispatch = useAppDispatch();
+
   const nearbyCards = nearbyOffers.map((card) => (
     <Card key={card.id} {...card} />
   ));
   const reviewsList = reviews.map((review) => (
     <ReviewsItem key={review.id} {...review} />
   ));
-
+  useEffect(() => {
+    if (id) {
+      const paramId = Number(id);
+      store.dispatch(fetchOfferAction(paramId));
+      store.dispatch(fetchCommentsAction(paramId));
+      store.dispatch(fetchNearbyOffers(paramId));
+    }
+  }, [id, dispatch]);
+  if (isOfferLoading) {
+    return <LoadingScreen />;
+  }
+  if (!offer) {
+    return null;
+  }
+  const {
+    title,
+    images,
+    isPremium,
+    rating,
+    type,
+    bedrooms,
+    maxAdults,
+    price,
+    goods,
+    host,
+    description,
+    city,
+  } = offer;
   return (
     <div className="page">
       <Helmet>
@@ -39,59 +87,26 @@ export default function PropertyScreen(): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              <div className="property__image-wrapper">
-                <img
-                  className="property__image"
-                  src="img/room.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="property__image-wrapper">
-                <img
-                  className="property__image"
-                  src="img/apartment-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="property__image-wrapper">
-                <img
-                  className="property__image"
-                  src="img/apartment-02.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="property__image-wrapper">
-                <img
-                  className="property__image"
-                  src="img/apartment-03.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="property__image-wrapper">
-                <img
-                  className="property__image"
-                  src="img/studio-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="property__image-wrapper">
-                <img
-                  className="property__image"
-                  src="img/apartment-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
+              {images.map((image) => (
+                <div className="property__image-wrapper" key={image}>
+                  <img
+                    className="property__image"
+                    src={image}
+                    alt="Photo studio"
+                  />
+                </div>
+              ))}
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              <div className="property__mark">
-                <span>Premium</span>
-              </div>
+              {isPremium && (
+                <div className="property__mark">
+                  <span>Premium</span>
+                </div>
+              )}
               <div className="property__name-wrapper">
-                <h1 className="property__name">
-                  Beautiful &amp; luxurious studio at great location
-                </h1>
+                <h1 className="property__name">{title}</h1>
                 <button
                   className="property__bookmark-button button"
                   type="button"
@@ -112,37 +127,32 @@ export default function PropertyScreen(): JSX.Element {
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">
-                  4.8
+                  {rating}
                 </span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  Apartment
+                  {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  3 Bedrooms
+                  {bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max 4 adults
+                  Max {maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">€120</b>
+                <b className="property__price-value">€{price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&#39s inside</h2>
                 <ul className="property__inside-list">
-                  <li className="property__inside-item">Wi-Fi</li>
-                  <li className="property__inside-item">Washing machine</li>
-                  <li className="property__inside-item">Towels</li>
-                  <li className="property__inside-item">Heating</li>
-                  <li className="property__inside-item">Coffee machine</li>
-                  <li className="property__inside-item">Baby seat</li>
-                  <li className="property__inside-item">Kitchen</li>
-                  <li className="property__inside-item">Dishwasher</li>
-                  <li className="property__inside-item">Cabel TV</li>
-                  <li className="property__inside-item">Fridge</li>
+                  {goods.map((good) => (
+                    <li className="property__inside-item" key={good}>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="property__host">
@@ -151,145 +161,34 @@ export default function PropertyScreen(): JSX.Element {
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="property__avatar user__avatar"
-                      src="img/avatar-angelina.jpg"
+                      src={host.avatarUrl}
                       width={74}
                       height={74}
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="property__user-name">Angelina</span>
-                  <span className="property__user-status">Pro</span>
+                  <span className="property__user-name">{host.name}</span>
+                  {host.isPro && (
+                    <span className="property__user-status">Pro</span>
+                  )}
                 </div>
                 <div className="property__description">
-                  <p className="property__text">
-                    A quiet cozy and picturesque that hides behind a a river by
-                    the unique lightness of Amsterdam. The building is green and
-                    from 18th century.
-                  </p>
-                  <p className="property__text">
-                    An independent House, strategically located between Rembrand
-                    Square and National Opera, but where the bustle of the city
-                    comes to rest in this alley flowery and colorful.
-                  </p>
+                  <p className="property__text">{description}</p>
                 </div>
               </div>
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">
-                  Reviews ·{' '}
+                  Reviews
                   <span className="reviews__amount">{reviewsList.length}</span>
                 </h2>
                 {reviewsList}
-                <form className="reviews__form form" action="#" method="post">
-                  <label
-                    className="reviews__label form__label"
-                    htmlFor="review"
-                  >
-                    Your review
-                  </label>
-                  <div className="reviews__rating-form form__rating">
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={5}
-                      id="5-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="5-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="perfect"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={4}
-                      id="4-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="4-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="good"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={3}
-                      id="3-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="3-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="not bad"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={2}
-                      id="2-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="2-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="badly"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={1}
-                      id="1-star"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="1-star"
-                      className="reviews__rating-label form__rating-label"
-                      title="terribly"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                  </div>
-                  <Review />
-                  <div className="reviews__button-wrapper">
-                    <p className="reviews__help">
-                      To submit review please make sure to set{' '}
-                      <span className="reviews__star">rating</span> and describe
-                      your stay with at least{' '}
-                      <b className="reviews__text-amount">50 characters</b>.
-                    </p>
-                    <button
-                      className="reviews__submit form__submit button"
-                      type="submit"
-                      disabled
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </form>
+
+                {authorizationStatus === AuthorizationStatus.Auth && <Review />}
               </section>
             </div>
           </div>
           <section className="property__map map">
-            <Map city={cities[3]} offers={nearbyOffers} />
+            <Map city={city} offers={nearbyOffers} />
           </section>
         </section>
 
