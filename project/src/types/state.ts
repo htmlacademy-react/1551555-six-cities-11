@@ -16,6 +16,8 @@ export type AppData = {
   offer: Offer | null;
   isOfferLoading: boolean;
   commentStatus: SubmitStatus;
+  favoriteOffers: Offers;
+  isFavoriteOffersLoading: boolean;
 };
 
 export type AppProcess = {

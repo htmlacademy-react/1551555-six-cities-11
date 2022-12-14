@@ -24,6 +24,7 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import Bookmark from '../../components/bookmark/bookmark';
 
 export default function PropertyScreen(): JSX.Element | null {
   const offer = useAppSelector(getOffer);
@@ -67,6 +68,7 @@ export default function PropertyScreen(): JSX.Element | null {
     host,
     description,
     city,
+    isFavorite,
   } = offer;
   return (
     <div className="page">
@@ -107,19 +109,11 @@ export default function PropertyScreen(): JSX.Element | null {
               )}
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
-                <button
-                  className="property__bookmark-button button"
-                  type="button"
-                >
-                  <svg
-                    className="property__bookmark-icon"
-                    width={31}
-                    height={33}
-                  >
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <Bookmark
+                  id={Number(id)}
+                  isActive={isFavorite}
+                  place="property"
+                />
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
