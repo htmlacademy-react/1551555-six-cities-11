@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getFavoriteOffers } from '../../store/app-data/selectors';
 
 export default function HeaderNav(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
 
   return (
     <nav className="header__nav">
@@ -20,7 +22,9 @@ export default function HeaderNav(): JSX.Element {
             <span className="header__user-name user__name">
               Oliver.conner@gmail.com
             </span>
-            <span className="header__favorite-count">3</span>
+            <span className="header__favorite-count">
+              {favoriteOffers.length}
+            </span>
           </Link>
         </li>
         <li className="header__nav-item">

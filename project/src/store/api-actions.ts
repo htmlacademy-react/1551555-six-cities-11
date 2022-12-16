@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
-import { Offers, Comments, Offer } from '../types/types.js';
+import { Offers, Comments, Offer, FavoriteAuth } from '../types/types.js';
 import { redirectToRoute } from './action';
 import { APIRoute, AppRoute } from '../const';
 import { saveToken, dropToken } from '../services/token';
@@ -68,6 +68,19 @@ export const fetchNearbyOffers = createAsyncThunk<
   return data;
 });
 
+export const fetchFavoriteOffers = createAsyncThunk<
+  Offers,
+  undefined,
+  {
+    dispatsh: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchFavoriteOffers', async (id, { dispatch, extra: api }) => {
+  const { data } = await api.get<Offers>(APIRoute.Favorite);
+  return data;
+});
+
 export const fetchOfferAction = createAsyncThunk<
   Offer,
   number,
@@ -125,3 +138,22 @@ export const logoutAction = createAsyncThunk<
   await api.delete(APIRoute.Logout);
   dropToken();
 });
+
+export const postFavoriteOffer = createAsyncThunk<
+  Offer,
+  FavoriteAuth,
+  {
+    dispatsh: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'data/postFavoriteOffer',
+  async ({ id, status }, { dispatch, extra: api }) => {
+    const { data } = await api.post<Offer>(
+      `${APIRoute.Favorite}/${id}/${status}`
+    );
+
+    return data;
+  }
+);

@@ -7,24 +7,14 @@ import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
+
 import { useAppSelector } from '../../hooks';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
-import {
-  getAuthorizationStatus,
-  getAuthCheckedStatus,
-} from '../../store/user-process/selectors';
-import { getOffersLoadingStatus } from '../../store/app-data/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 export default function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
-  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
-
-  if (!isAuthChecked || isOffersDataLoading) {
-    return <LoadingScreen />;
-  }
 
   return (
     <HelmetProvider>

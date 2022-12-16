@@ -61,3 +61,4 @@ export type Comment = {
 
 export type Comments = Comment[];
 export type SortName = keyof typeof Sorting;
+export type FavoriteAuth = Pick<Offer, 'id'> & { status: 1 | 0 }
