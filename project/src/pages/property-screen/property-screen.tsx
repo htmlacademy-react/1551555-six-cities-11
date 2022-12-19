@@ -25,6 +25,7 @@ import { useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import Bookmark from '../../components/bookmark/bookmark';
+import Error404 from '../error-404/error-404';
 
 export default function PropertyScreen(): JSX.Element | null {
   const offer = useAppSelector(getOffer);
@@ -49,12 +50,15 @@ export default function PropertyScreen(): JSX.Element | null {
       store.dispatch(fetchNearbyOffers(paramId));
     }
   }, [id, dispatch]);
+
   if (isOfferLoading) {
     return <LoadingScreen />;
   }
+
   if (!offer) {
-    return null;
+    return <Error404 />;
   }
+
   const {
     title,
     images,
@@ -70,6 +74,9 @@ export default function PropertyScreen(): JSX.Element | null {
     city,
     isFavorite,
   } = offer;
+
+  const allPoints = [...nearbyOffers, offer];
+
   return (
     <div className="page">
       <Helmet>
@@ -182,7 +189,12 @@ export default function PropertyScreen(): JSX.Element | null {
             </div>
           </div>
           <section className="property__map map">
-            <Map city={city} offers={nearbyOffers} />
+            <Map
+              city={city}
+              offers={allPoints}
+              selectedOffer={offer}
+              place="property"
+            />
           </section>
         </section>
 

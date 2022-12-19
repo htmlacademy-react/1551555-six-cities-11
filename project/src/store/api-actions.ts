@@ -19,7 +19,6 @@ export const fetchOffersAction = createAsyncThunk<
   }
 >('data/fetchOffers', async (_arg, { dispatch, extra: api }) => {
   const { data } = await api.get<Offers>(APIRoute.Offers);
-
   return data;
 });
 
@@ -95,19 +94,20 @@ export const fetchOfferAction = createAsyncThunk<
 });
 
 export const checkAuthAction = createAsyncThunk<
-  void,
+  UserData['email'],
   undefined,
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('user/checkAuth', async (_arg, { dispatch, extra: api }) => {
-  await api.get(APIRoute.Login);
+>('user/checkAuth', async (email, { dispatch, extra: api }) => {
+  const { data } = await api.get<UserData>(APIRoute.Login, email);
+  return data.email;
 });
 
 export const loginAction = createAsyncThunk<
-  void,
+  UserData['email'],
   AuthData,
   {
     dispatch: AppDispatch;
@@ -123,6 +123,7 @@ export const loginAction = createAsyncThunk<
     saveToken(token);
 
     dispatch(redirectToRoute(AppRoute.Favorites));
+    return email;
   }
 );
 

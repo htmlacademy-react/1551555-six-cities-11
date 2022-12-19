@@ -6,7 +6,9 @@ import {
   fetchCommentsAction,
   fetchNearbyOffers,
   fetchOfferAction,
-  postCommentAction, fetchFavoriteOffers, postFavoriteOffer
+  postCommentAction,
+  fetchFavoriteOffers,
+  postFavoriteOffer,
 } from '../api-actions';
 
 const initialState: AppData = {
@@ -57,6 +59,9 @@ export const appData = createSlice({
         state.offer = action.payload;
         state.isOfferLoading = false;
       })
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.isOfferLoading = false;
+      })
       .addCase(fetchFavoriteOffers.pending, (state) => {
         state.isFavoriteOffersLoading = true;
       })
@@ -69,7 +74,9 @@ export const appData = createSlice({
       })
       .addCase(postFavoriteOffer.fulfilled, (state, action) => {
         const updatedOffer = action.payload;
-        state.offers = state.offers.map((offer) => offer.id === updatedOffer.id ? updatedOffer : offer);
+        state.offers = state.offers.map((offer) =>
+          offer.id === updatedOffer.id ? updatedOffer : offer
+        );
 
         if (state.offer && state.offer.id === updatedOffer.id) {
           state.offer = updatedOffer;
@@ -78,7 +85,9 @@ export const appData = createSlice({
         if (updatedOffer.isFavorite) {
           state.favoriteOffers = state.favoriteOffers.concat(updatedOffer);
         } else {
-          state.favoriteOffers = state.favoriteOffers.filter((favoriteOffer) => favoriteOffer.id !== updatedOffer.id);
+          state.favoriteOffers = state.favoriteOffers.filter(
+            (favoriteOffer) => favoriteOffer.id !== updatedOffer.id
+          );
         }
       });
   },

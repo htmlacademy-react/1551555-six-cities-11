@@ -46,6 +46,14 @@ export type AppProps = {
 
 export type Cities = City[];
 
+// export type User=
+//   {
+//     avatarUrl: string;
+//     id: number;
+//     isPro: boolean;
+//     name: string;
+//   };
+
 export type Comment = {
   comment: string;
   date: string;
@@ -61,4 +69,6 @@ export type Comment = {
 
 export type Comments = Comment[];
 export type SortName = keyof typeof Sorting;
-export type FavoriteAuth = Pick<Offer, 'id'> & { status: 1 | 0 }
+export type FavoriteAuth = Pick<Offer, 'id'> & { status: 1 | 0 };
+// export type UserAuth = Pick<UserData, 'email'>;
+// export type UserAuth = Pick<UserData, 'email'> & { password: string };
