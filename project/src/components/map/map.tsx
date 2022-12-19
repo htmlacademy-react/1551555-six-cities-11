@@ -8,7 +8,8 @@ import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const';
 type MapProps = {
   city: City;
   offers: Offers;
-  selectedOffer?: Offer | undefined;
+  selectedOffer: Offer | undefined;
+  place?: 'cities' | 'property';
 };
 
 const defaultCustomIcon = new Icon({
@@ -27,6 +28,7 @@ export default function Map({
   city,
   offers,
   selectedOffer,
+  place = 'cities',
 }: MapProps): JSX.Element {
   const mapRef = useRef(null);
 
@@ -54,5 +56,11 @@ export default function Map({
     }
   }, [map, offers, city, selectedOffer]);
 
-  return <div style={{ height: '100%' }} ref={mapRef}></div>;
+  return (
+    <section
+      className={`${place}__map map`}
+      ref={mapRef}
+      style={{ height: '100%' }}
+    />
+  );
 }

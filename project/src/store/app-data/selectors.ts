@@ -24,7 +24,9 @@ export const selectorOffers = createSelector(
   [getOffers, getCity, getSort],
   (offers, city, sorting) =>
     city === DEFAULT_CITY
-      ? offers.filter((offer) => offer.city.name === DEFAULT_CITY).sort(Sorter[sorting])
+      ? offers
+        .filter((offer) => offer.city.name === DEFAULT_CITY)
+        .sort(Sorter[sorting])
       : offers.filter((offer) => offer.city.name === city).sort(Sorter[sorting])
 );
 export const getOffer = (state: State): Offer | null =>
@@ -37,3 +39,8 @@ export const limitingComments = createSelector([getComments], (comments) =>
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, MAX_COMMENTS)
 );
+
+export const getFavoriteOffersLoadingStatus = (state: State): boolean =>
+  state[NameSpace.Data].isFavoriteOffersLoading;
+export const getFavoriteOffers = (state: State): Offers =>
+  state[NameSpace.Data].favoriteOffers;

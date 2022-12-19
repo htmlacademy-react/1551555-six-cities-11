@@ -8,7 +8,6 @@ type SortingListProps = {
 };
 
 export default function SortList({ onChange, activeSort }: SortingListProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const handleToggleButtonClick = () => {
     setIsOpened((prevIsOpened) => !prevIsOpened);
@@ -30,22 +29,24 @@ export default function SortList({ onChange, activeSort }: SortingListProps) {
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className="places__options places__options--custom places__options--opened">
-        {(Object.entries(Sorting) as [SortName, Sorting][]).map(
-          ([name, title]) => (
-            <li
-              className={`places__option${
-                name === activeSort ? ' places__option--active' : ''
-              }`}
-              tabIndex={0}
-              key={name}
-              onClick={() => handleSortItemClick(name)}
-            >
-              {title}
-            </li>
-          )
-        )}
-      </ul>
+      {isOpened && (
+        <ul className="places__options places__options--custom places__options--opened">
+          {(Object.entries(Sorting) as [SortName, Sorting][]).map(
+            ([name, title]) => (
+              <li
+                className={`places__option${
+                  name === activeSort ? ' places__option--active' : ''
+                }`}
+                tabIndex={0}
+                key={name}
+                onClick={() => handleSortItemClick(name)}
+              >
+                {title}
+              </li>
+            )
+          )}
+        </ul>
+      )}
     </form>
   );
 }

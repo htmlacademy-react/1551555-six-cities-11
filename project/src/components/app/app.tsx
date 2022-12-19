@@ -7,25 +7,11 @@ import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import { useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../../const';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
-import {
-  getAuthorizationStatus,
-  getAuthCheckedStatus,
-} from '../../store/user-process/selectors';
-import { getOffersLoadingStatus } from '../../store/app-data/selectors';
 
 export default function App(): JSX.Element {
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
-  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
-
-  if (!isAuthChecked || isOffersDataLoading) {
-    return <LoadingScreen />;
-  }
-
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
@@ -34,13 +20,26 @@ export default function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={authorizationStatus}>
+              <PrivateRoute
+                privatFor={AuthorizationStatus.NoAuth}
+                redirectTo={AppRoute.Login}
+              >
                 <FavoritesScreen />
               </PrivateRoute>
             }
           />
           <Route path={AppRoute.Room} element={<PropertyScreen />} />
-          <Route path={AppRoute.Login} element={<LoginScreen />} />
+          <Route
+            path={AppRoute.Login}
+            element={
+              <PrivateRoute
+                privatFor={AuthorizationStatus.Auth}
+                redirectTo={AppRoute.Main}
+              >
+                <LoginScreen />
+              </PrivateRoute>
+            }
+          />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </HistoryRouter>

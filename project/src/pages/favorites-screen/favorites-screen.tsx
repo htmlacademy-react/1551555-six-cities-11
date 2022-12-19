@@ -5,13 +5,39 @@ import { AppRoute, HeaderTitle } from '../../const';
 import CardFavorites from '../../components/card-favorits/card-favorites';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getOffers } from '../../store/app-data/selectors';
+import {
+  getFavoriteOffers,
+  getFavoriteOffersLoadingStatus,
+} from '../../store/app-data/selectors';
+import { Offers } from '../../types/types';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 export default function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector(getOffers);
-  const offerList = offers.map((filmData) => (
-    <CardFavorites key={filmData.id} {...filmData} />
-  ));
+  const isFavoriteOffersLoading = useAppSelector(
+    getFavoriteOffersLoadingStatus
+  );
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
+
+  const groupedOffersByCity = favoriteOffers.reduce<{ [key: string]: Offers }>(
+    (acc, curr) => {
+      if (curr.isFavorite) {
+        const city = curr.city.name;
+
+        if (!(city in acc)) {
+          acc[city] = [];
+        }
+
+        acc[city].push(curr);
+      }
+
+      return acc;
+    },
+    {}
+  );
+
+  if (isFavoriteOffersLoading) {
+    return <LoadingScreen/>;
+  }
   return (
     <div className="page">
       <Helmet>
@@ -33,27 +59,24 @@ export default function FavoritesScreen(): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">{offerList}</div>
-              </li>
-
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Cologne</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places"></div>
-              </li>
+              {Object.entries(groupedOffersByCity).map(
+                ([city, groupedOffers]) => (
+                  <li className="favorites__locations-items" key={city}>
+                    <div className="favorites__locations locations locations--current">
+                      <div className="locations__item ">
+                        <a className="locations__item-link" href="#">
+                          <span>{city}</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="favorites__places">
+                      {groupedOffers.map((offerData) => (
+                        <CardFavorites key={offerData.id} {...offerData} />
+                      ))}
+                    </div>
+                  </li>
+                )
+              )}
             </ul>
           </section>
         </div>

@@ -2,11 +2,17 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import {
+  getAuthorizationStatus,
+  getUser,
+} from '../../store/user-process/selectors';
+import { getFavoriteOffers } from '../../store/app-data/selectors';
 
 export default function HeaderNav(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const user = useAppSelector(getUser);
 
   return (
     <nav className="header__nav">
@@ -17,10 +23,12 @@ export default function HeaderNav(): JSX.Element {
             to={AppRoute.Favorites}
           >
             <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-            <span className="header__user-name user__name">
-              Oliver.conner@gmail.com
-            </span>
-            <span className="header__favorite-count">3</span>
+            <span className="header__user-name user__name">{user}</span>
+            {authorizationStatus === AuthorizationStatus.Auth && (
+              <span className="header__favorite-count">
+                {favoriteOffers.length}
+              </span>
+            )}
           </Link>
         </li>
         <li className="header__nav-item">

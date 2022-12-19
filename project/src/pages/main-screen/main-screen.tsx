@@ -8,20 +8,28 @@ import { HeaderTitle, cities } from '../../const';
 import Map from '../../components/map/map';
 import FilterOffer from '../../components/filter-offer/filter-offer';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { selectorOffers, getOffers } from '../../store/app-data/selectors';
+import {
+  selectorOffers,
+  getOffers,
+  getOffersLoadingStatus,
+} from '../../store/app-data/selectors';
 import { getCity, getSort } from '../../store/app-process/selectors';
 import SortList from '../../components/sort-list/sort-list';
 import { activeSorting } from '../../store/app-process/app-process';
+import OffersEmpty from '../../components/offers-empty/offers-empty';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 export default function MainScreen(): JSX.Element {
   const offers = useAppSelector(getOffers);
   const filterOffers = useAppSelector(selectorOffers);
   const selectedCity = useAppSelector(getCity);
   const activeSort = useAppSelector(getSort);
+  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
     undefined
   );
   const dispatch = useAppDispatch();
+  const isOffersCityEmpty = filterOffers.length === 0;
   const onListItemHover = (listItemName: number) => {
     const currentOffer = offers.find((offer) => offer.id === listItemName);
     setSelectedOffer(currentOffer);
@@ -31,7 +39,11 @@ export default function MainScreen(): JSX.Element {
   };
 
   const CityList = cities.map((cityData) => (
-    <FilterOffer key={cityData.name} {...cityData} />
+    <FilterOffer
+      key={cityData.name}
+      {...cityData}
+      isActive={cityData.name === selectedCity}
+    />
   ));
 
   const [filterCities] = useAppSelector((state) =>
@@ -48,6 +60,9 @@ export default function MainScreen(): JSX.Element {
       onMouseLeave={onListItemHoverLeave}
     />
   ));
+  if (isOffersDataLoading && !isOffersCityEmpty) {
+    return <LoadingScreen />;
+  }
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -64,7 +79,11 @@ export default function MainScreen(): JSX.Element {
         </div>
       </header>
 
-      <main className="page__main page__main--index">
+      <main
+        className={`page__main page__main--index ${
+          isOffersCityEmpty ? 'page__main--index-empty' : ''
+        }`}
+      >
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -72,25 +91,33 @@ export default function MainScreen(): JSX.Element {
           </section>
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">
-                {filterOffers.length} places to stay in {selectedCity}
-              </b>
-              <SortList onChange={onSortChange} activeSort={activeSort} />
-              <div className="cities__places-list places__list tabs__content">
-                {offerList}
-              </div>
-            </section>
+          <div
+            className={`cities__places-container container ${
+              isOffersCityEmpty ? 'cities__places-container--empty' : ''
+            }`}
+          >
+            {isOffersCityEmpty ? (
+              <OffersEmpty city={selectedCity} />
+            ) : (
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">
+                  {filterOffers.length} places to stay in {selectedCity}
+                </b>
+                <SortList onChange={onSortChange} activeSort={activeSort} />
+                <div className="cities__places-list places__list tabs__content">
+                  {offerList}
+                </div>
+              </section>
+            )}
             <div className="cities__right-section">
-              <section className="cities__map map">
+              {!isOffersCityEmpty && (
                 <Map
                   city={filterCities}
                   offers={filterOffers}
                   selectedOffer={selectedOffer}
                 />
-              </section>
+              )}
             </div>
           </div>
         </div>

@@ -7,6 +7,8 @@ import {
   fetchNearbyOffers,
   fetchOfferAction,
   postCommentAction,
+  fetchFavoriteOffers,
+  postFavoriteOffer,
 } from '../api-actions';
 
 const initialState: AppData = {
@@ -17,6 +19,8 @@ const initialState: AppData = {
   offer: null,
   isOfferLoading: false,
   commentStatus: SubmitStatus.Still,
+  favoriteOffers: [],
+  isFavoriteOffersLoading: false,
 };
 
 export const appData = createSlice({
@@ -54,6 +58,37 @@ export const appData = createSlice({
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
         state.offer = action.payload;
         state.isOfferLoading = false;
+      })
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.isOfferLoading = false;
+      })
+      .addCase(fetchFavoriteOffers.pending, (state) => {
+        state.isFavoriteOffersLoading = true;
+      })
+      .addCase(fetchFavoriteOffers.fulfilled, (state, action) => {
+        state.favoriteOffers = action.payload;
+        state.isFavoriteOffersLoading = false;
+      })
+      .addCase(fetchFavoriteOffers.rejected, (state) => {
+        state.isFavoriteOffersLoading = false;
+      })
+      .addCase(postFavoriteOffer.fulfilled, (state, action) => {
+        const updatedOffer = action.payload;
+        state.offers = state.offers.map((offer) =>
+          offer.id === updatedOffer.id ? updatedOffer : offer
+        );
+
+        if (state.offer && state.offer.id === updatedOffer.id) {
+          state.offer = updatedOffer;
+        }
+
+        if (updatedOffer.isFavorite) {
+          state.favoriteOffers = state.favoriteOffers.concat(updatedOffer);
+        } else {
+          state.favoriteOffers = state.favoriteOffers.filter(
+            (favoriteOffer) => favoriteOffer.id !== updatedOffer.id
+          );
+        }
       });
   },
 });
