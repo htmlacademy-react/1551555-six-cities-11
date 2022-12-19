@@ -39,7 +39,11 @@ export default function MainScreen(): JSX.Element {
   };
 
   const CityList = cities.map((cityData) => (
-    <FilterOffer key={cityData.name} {...cityData} />
+    <FilterOffer
+      key={cityData.name}
+      {...cityData}
+      isActive={cityData.name === selectedCity}
+    />
   ));
 
   const [filterCities] = useAppSelector((state) =>
@@ -108,13 +112,11 @@ export default function MainScreen(): JSX.Element {
             )}
             <div className="cities__right-section">
               {!isOffersCityEmpty && (
-                <section className="cities__map map">
-                  <Map
-                    city={filterCities}
-                    offers={filterOffers}
-                    selectedOffer={selectedOffer}
-                  />
-                </section>
+                <Map
+                  city={filterCities}
+                  offers={filterOffers}
+                  selectedOffer={selectedOffer}
+                />
               )}
             </div>
           </div>
